@@ -1,0 +1,8 @@
+.hero {
+    background: url("~assets/img/logo.png");
+    transform: scale(0.5);
+}
+
+::placeholder {
+    color: gray;
+}
