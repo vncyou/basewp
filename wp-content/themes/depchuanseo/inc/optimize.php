@@ -54,9 +54,7 @@ function dcs_disable_gutenberg()
     function dcs_disable_gutenberg_scripts()
     {
         wp_dequeue_style('wp-block-library');
-        // Remove Gutenberg theme.
         wp_dequeue_style('wp-block-library-theme');
-        // Remove inline global CSS on the front end.
         wp_dequeue_style('global-styles');
     }
 
