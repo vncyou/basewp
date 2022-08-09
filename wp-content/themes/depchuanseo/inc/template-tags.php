@@ -166,3 +166,118 @@ if (! function_exists('wp_body_open')) :
         do_action('wp_body_open');
     }
 endif;
+
+if (!function_exists('dcs_excerpt')) :
+    function dcs_excerpt($excerpt, $count = 30)
+    {
+        $raw_str = strip_tags($excerpt);
+        $trim_str = rtrim($raw_str);
+
+        echo wp_trim_words($trim_str, $count);
+    }
+endif;
+
+if (!function_exists('dcs_pagination')):
+    function dcs_pagination()
+    {
+        $paginates = paginate_links([
+            'mid_size' => 1,
+            'type' => 'array'
+        ]);
+
+        if ($paginates) {
+            $html = '<nav aria-label="Page pagination" class="d-flex justify-content-center"><ul class="pagination">';
+            foreach ($paginates as $paginate) {
+                $html .= '<li class="page-item">' . $paginate . '</li>';
+            }
+            $html .= '</ul></nav>';
+
+            echo $html;
+        }
+
+        echo '';
+    }
+endif;
+
+if (!function_exists('dcs_post_navigation')):
+    function dcs_post_navigation($args = array())
+    {
+        // Make sure the nav element has an aria-label attribute: fallback to the screen reader text.
+        if ( ! empty( $args['screen_reader_text'] ) && empty( $args['aria_label'] ) ) {
+            $args['aria_label'] = $args['screen_reader_text'];
+        }
+
+        $args = wp_parse_args(
+            $args,
+            array(
+                'prev_text'          => '%title',
+                'next_text'          => '%title',
+                'in_same_term'       => false,
+                'excluded_terms'     => '',
+                'taxonomy'           => 'category',
+                'screen_reader_text' => __( 'Post navigation' ),
+                'aria_label'         => __( 'Posts' ),
+                'class'              => 'post-navigation',
+            )
+        );
+
+        $navigation = '';
+
+        $previous = get_previous_post_link(
+            '<div class="col-sm-6 bg-primary-soft p-4 position-relative border-end border-1 rounded-start nav-previous"><span><i class="ti ti-arrow-big-left-lines me-1 rtl-flip"></i>' . __('Bài cũ') . '</span><h5 class="m-0 btn-link text-decoration-none">%link</h5></div>',
+            $args['prev_text'],
+            $args['in_same_term'],
+            $args['excluded_terms'],
+            $args['taxonomy']
+        );
+
+        $next = get_next_post_link(
+            '<div class="col-sm-6 bg-primary-soft p-4 position-relative text-sm-end rounded-end nav-next"><span>' . __('Bài mới') . '<i class="ti ti-arrow-big-right-lines ms-1 rtl-flip"></i></span><h5 class="m-0 btn-link text-decoration-none">%link</h5></div>',
+            $args['next_text'],
+            $args['in_same_term'],
+            $args['excluded_terms'],
+            $args['taxonomy']
+        );
+
+        // Only add markup if there's somewhere to navigate to.
+        if ( $previous || $next ) {
+            $class = $args['class'];
+            $screen_reader_text = $args['screen_reader_text'];
+            $links = $previous . $next;
+            $aria_label = $args['aria_label'];
+
+            if ( empty( $screen_reader_text ) ) {
+                $screen_reader_text = __( 'Posts navigation' );
+            }
+            if ( empty( $aria_label ) ) {
+                $aria_label = $screen_reader_text;
+            }
+
+            $template = '<nav class="post-navigation %1$s" aria-label="%4$s"><h2 class="screen-reader-text">%2$s</h2><div class="row g-0 nav-links">%3$s</div></nav>';
+
+            /**
+             * Filters the navigation markup template.
+             *
+             * Note: The filtered template HTML must contain specifiers for the navigation
+             * class (%1$s), the screen-reader-text value (%2$s), placement of the navigation
+             * links (%3$s), and ARIA label text if screen-reader-text does not fit that (%4$s):
+             *
+             *     <nav class="navigation %1$s" aria-label="%4$s">
+             *         <h2 class="screen-reader-text">%2$s</h2>
+             *         <div class="nav-links">%3$s</div>
+             *     </nav>
+             *
+             * @since 4.4.0
+             *
+             * @param string $template The default template.
+             * @param string $class    The class passed by the calling function.
+             * @return string Navigation template.
+             */
+            $template = apply_filters( 'navigation_markup_template', $template, $class );
+
+            $navigation = sprintf( $template, sanitize_html_class( $class ), esc_html( $screen_reader_text ), $links, esc_html( $aria_label ) );
+        }
+
+        echo $navigation;
+    }
+endif;
