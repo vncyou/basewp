@@ -21,10 +21,12 @@ module.exports = {
         splitChunks: false
     },
     output: {
-        path: path.join(__dirname, 'public'),
+        path: path.join(__dirname, 'assets'),
         filename: '[name].min.js',
+        assetModuleFilename: '[path][name][ext][query]',
+        publicPath: '',
         asyncChunks: true,
-        clean: true
+        clean: false
     },
     resolve: {
         alias: {
@@ -51,7 +53,7 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true,
-                            url: true
+                            url: false
                         }
                     },
                     {

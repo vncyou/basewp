@@ -1,12 +1,14 @@
 .hero {
-    background: url("~assets/img/logo.png");
-    background: no-repeat;
+    background-image: url("img/logo.png");
+    background-repeat: no-repeat;
+    background-position: center center;
     transition: all 1s;
     font-size: 20px;
-    color: (theme(colors.primary));
+    color: theme('colors.primary');
+    min-height: 200px;
 
-    @screen m {
-        background-color: (theme(colors.primary));
+    @screen 3xl {
+        color: theme('colors.secondary.900');
     }
 }
 
