@@ -112,7 +112,7 @@ function dcs_get_media(
     )), wp_kses_allowed_html('post'));
 }
 
-function dcs_get_image($url, $alt, $class)
+function dcs_get_image($url, $alt, $class = 'object-contain')
 {
     return '<img src="' . esc_url($url) . '" loading="lazy" class="lazy ' . $class . '" alt="' . esc_attr($alt) . '" />';
 }

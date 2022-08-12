@@ -1032,6 +1032,10 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
 .p-4 {
   padding: 1rem;
 }
