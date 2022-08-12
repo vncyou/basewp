@@ -4,7 +4,5 @@
 @import "tailwindcss/screens.css";
 
 @import "./base/wysiwyg.scss";
-@import "./base/typography.css";
 
-
-@import "~modules/hero/hero.css";
+@import "./../../modules/hero/hero.scss";

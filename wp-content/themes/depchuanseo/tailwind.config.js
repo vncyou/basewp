@@ -1,4 +1,9 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
+    experimental: {
+        applyComplexClasses: true
+    },
     content: [
         './src/**/*.js',
         './module/**/*.{js,php,html}',
@@ -20,6 +25,11 @@ module.exports = {
             xl: '1600px',
             '2xl': '1800px',
             '3xl': '2000px'
+        },
+        colors: {
+            primary: '#312e81',
+            secondary: colors.yellow,
+            neutral: colors.gray
         },
         aspectRatio: {},
         extend: {}

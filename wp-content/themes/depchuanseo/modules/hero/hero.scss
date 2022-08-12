@@ -1,0 +1,28 @@
+.hero {
+    background: url("~assets/img/logo.png");
+    background: no-repeat;
+    transition: all 1s;
+    font-size: 20px;
+    color: (theme(colors.primary));
+
+    @screen m {
+        background-color: (theme(colors.primary));
+    }
+}
+
+::placeholder {
+    color: gray;
+}
+
+@mixin icon($network, $color: blue) {
+    .icon.is-#{$network} {
+        color: $color;
+    }
+
+    .icon.is-#{$network}:hover {
+        color: white;
+        background: $color;
+    }
+}
+
+@include icon(twitter);
