@@ -19,5 +19,5 @@ function the_module($module_name, $args = array())
 
     extract($args, EXTR_SKIP);
 
-    locate_template("/modules/$module_name/$module_name.php", true, false);
+    require_once (get_template_directory() . "/modules/$module_name/$module_name.php");
 }

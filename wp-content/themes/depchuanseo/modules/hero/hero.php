@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $title
+ * @var $desc
+ */
+?>
 <section class="hero" data-module="hero">
-    Hero
+    Hero <?=$title;?> <?=$desc;?>
 </section>
