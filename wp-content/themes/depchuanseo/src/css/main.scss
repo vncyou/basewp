@@ -2,7 +2,7 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 @import "tailwindcss/screens.css";
-
-@import "./base/wysiwyg.scss";
-
-@import "./../../modules/hero/hero.scss";
+@import "vendors/index";
+@import "base/index";
+@import "components/index";
+@import "./../../modules/index";
