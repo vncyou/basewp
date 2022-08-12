@@ -1,47 +1,4 @@
 <?php
-
-/**
- * Construct and return an image tag for lazy-loading
- *
- * @param array|string|int $image
- * @param string $size
- * @param string $class
- * @param string $sizes
- * @param string $alt
- */
-function _get_image($image, $size, $class, $alt, $sizes = '')
-{
-    if (is_array($image)) {
-        $id = $image['ID'];
-        $img = wp_get_attachment_image_src($id, $size)[0];
-    } elseif (is_numeric($image)) {
-        $id = $image;
-        $img = wp_get_attachment_image_src($id, $size)[0];
-    } else {
-        $id = null;
-        $img = $image;
-    }
-
-    if (empty($img)) {
-        return;
-    }
-
-    $class = "class='lazy ${class}'";
-    $sizes = empty($sizes) ? '' : "sizes='${sizes}'";
-    $blank = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    $html = '<img %s src="%s" data-normal="%s" data-retina="%s" data-srcset="%s" alt="%s" %s>';
-    printf(
-        $html,
-        $class,
-        $img,
-        $img,
-        $img,
-        wp_get_attachment_image_srcset($id, $size) ? wp_get_attachment_image_srcset($id, $size) : $img,
-        $alt,
-        $sizes
-    );
-}
-
 //SVGs
 function _svg($data = false, $echo = true, $inline = false, $responsive = true)
 {
@@ -93,7 +50,7 @@ function _get_svg($name)
  * @param $attrs array ['img_src', 'img_sizes', 'img_id']
  * @return string
  */
-function dcs_image($attrs)
+function dcs_media($attrs)
 {
     /*
      * get image ID or placeholder image
@@ -111,44 +68,52 @@ function dcs_image($attrs)
     $img_width = 'width="100%"';
     $img_height = 'height="100%"';
     $img_markup = '';
-    $img_alt = '';
 
     if ($img) {
 
         /*get image sizes, src, srcset*/
         $img_sizes = "sizes='" . $attrs['img_sizes'] . "'";
 
-        if (is_numeric($img)) {
+        $img_src = esc_url(wp_get_attachment_image_url($img, $attrs['img_src']));
+        $img_srcset = wp_get_attachment_image_srcset($img);
 
-            /*add webp image if enabled*/
-//        if (wp_get_attachment_image_srcset($img)) {
-//            $img_srcset_webp = str_ireplace(array('.jpg ', '.jpeg ', '.png '), array('.jpg.webp ', '.jpeg.webp ', '.png.webp '), $img_srcset);
-//            $img_markup = "<source type='image/webp' srcset=\"$img_srcset_webp\" $img_sizes>";
-//        }
+        /*get image alt if existing or add title instead*/
+        $img_alt = "alt='" . esc_attr(get_post_meta($img, '_wp_attachment_image_alt', true)) . "'";
+        if (!get_post_meta($img, '_wp_attachment_image_alt', true)) {
+            $img_alt = "alt='" . get_post($img)->post_title . "'";
+        }
 
-            $img_src = esc_url(wp_get_attachment_image_url($img, $attrs['img_src']));
-            $img_srcset = wp_get_attachment_image_srcset($img);
-
-            /*get image alt if existing or add title instead*/
-            $img_alt = "alt='" . esc_attr(get_post_meta($img, '_wp_attachment_image_alt', true)) . "'";
-            if (!get_post_meta($img, '_wp_attachment_image_alt', true)) {
-                $img_alt = "alt='" . get_post($img)->post_title . "'";
-            }
-
-            /*get image sizes*/
-            if (0 != wp_get_attachment_image_src($img, 'full')[1]) {
-                $img_width = "width='" . wp_get_attachment_image_src($img, 'full')[1] . "'";
-            }
-            if (0 != wp_get_attachment_image_src($img, 'full')[2]) {
-                $img_height = "height='" . wp_get_attachment_image_src($img, 'full')[2] . "'";
-            }
+        /*get image sizes*/
+        $size = wp_get_attachment_image_src($img, 'full');
+        if (0 != $size[1]) {
+            $img_width = "width='" . $size[1] . "'";
+        }
+        if (0 != $size[2]) {
+            $img_height = "height='" . $size[2] . "'";
         }
 
         /*return image markup*/
-        return $img_markup . '<img class="img-fluid" ' . $lazy . ' src="' . $img_src . '" srcset="' . $img_srcset . '" ' . $img_sizes . ' ' . $img_alt . ' ' . $img_width . ' ' . $img_height . '/>';
+        return $img_markup . '<img class="lazy" ' . $lazy . ' src="' . $img_src . '" srcset="' . $img_srcset . '" ' . $img_sizes . ' ' . $img_alt . ' ' . $img_width . ' ' . $img_height . '/>';
 
     } else {
         /*return onepixel placeholder if both image and placeholder ID missing*/
         return '<img class="img-fluid" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Image"' . $img_width . ' '  . $img_height . '/>';
     }
+}
+
+function dcs_get_media(
+    $id,
+    $src = 'w800',
+    $sizes = '(max-width: 575px) calc(100vw - 24px), (max-width: 767px) 516px, (max-width: 991px) 336px, (max-width: 1199px) 456px, (max-width: 1399px) 546px, 636px'
+) {
+    return wp_kses(dcs_media(array(
+        'img_src' => $src,
+        'img_sizes' => $sizes,
+        'img_id' => $id
+    )), wp_kses_allowed_html('post'));
+}
+
+function dcs_get_image($url, $alt, $class)
+{
+
 }
