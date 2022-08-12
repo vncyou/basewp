@@ -92,7 +92,7 @@ function dcs_media($attrs)
         }
 
         /*return image markup*/
-        return '<img class="lazy" ' . $lazy . ' src="' . $img_src . '" srcset="' . $img_srcset . '" ' . $img_sizes . ' ' . $img_alt . ' ' . $img_width . ' ' . $img_height . '/>';
+        return '<img class="lazy object-contain" ' . $lazy . ' src="' . $img_src . '" srcset="' . $img_srcset . '" ' . $img_sizes . ' ' . $img_alt . ' ' . $img_width . ' ' . $img_height . '/>';
 
     } else {
         /*return onepixel placeholder if both image and placeholder ID missing*/

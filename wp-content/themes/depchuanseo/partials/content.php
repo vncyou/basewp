@@ -31,7 +31,7 @@
         <?=dcs_get_media(get_post_thumbnail_id())?>
     </picture>
 
-    <div class="entry-content">
+    <div class="wysiwyg entry-content">
         <?php
         the_content(
             sprintf(
