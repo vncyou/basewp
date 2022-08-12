@@ -67,7 +67,6 @@ function dcs_media($attrs)
      */
     $img_width = 'width="100%"';
     $img_height = 'height="100%"';
-    $img_markup = '';
 
     if ($img) {
 
@@ -93,7 +92,7 @@ function dcs_media($attrs)
         }
 
         /*return image markup*/
-        return $img_markup . '<img class="lazy" ' . $lazy . ' src="' . $img_src . '" srcset="' . $img_srcset . '" ' . $img_sizes . ' ' . $img_alt . ' ' . $img_width . ' ' . $img_height . '/>';
+        return '<img class="lazy" ' . $lazy . ' src="' . $img_src . '" srcset="' . $img_srcset . '" ' . $img_sizes . ' ' . $img_alt . ' ' . $img_width . ' ' . $img_height . '/>';
 
     } else {
         /*return onepixel placeholder if both image and placeholder ID missing*/
@@ -115,5 +114,5 @@ function dcs_get_media(
 
 function dcs_get_image($url, $alt, $class)
 {
-
+    return '<img src="' . esc_url($url) . '" loading="lazy" class="lazy ' . $class . '" alt="' . esc_attr($alt) . '" />';
 }

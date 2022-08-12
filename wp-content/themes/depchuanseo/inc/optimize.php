@@ -85,6 +85,7 @@ add_action('wp_dashboard_setup', function () {
     remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
     remove_meta_box('dashboard_activity', 'dashboard', 'normal');
     remove_meta_box('dashboard_site_health', 'dashboard', 'normal');
+    remove_meta_box('wpseo-dashboard-overview', 'dashboard', 'normal');
 });
 
 function dcs_adjust_the_wp_menu() {
