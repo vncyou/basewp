@@ -1,6 +1,7 @@
 const path = require('path')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
 module.exports = {
     mode: process.env.NODE_ENV,
@@ -78,6 +79,11 @@ module.exports = {
         new MiniCssExtractPlugin({
             linkType: false,
             filename: '[name].min.css'
+        }),
+        new BrowserSyncPlugin({
+            proxy: 'https://basewp.lndo.site',
+            https: false,
+            notify: false
         })
     ]
 }
