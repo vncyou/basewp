@@ -4,6 +4,7 @@
         "no-var": 0,
         "max-len": 0,
         "eqeqeq": 0,
+        "no-sequences": 0,
         "new-cap": 0,
         "no-func-assign": 0,
         "no-cond-assign": 0,

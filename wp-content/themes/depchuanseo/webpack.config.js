@@ -83,7 +83,8 @@ module.exports = {
         new BrowserSyncPlugin({
             proxy: 'https://basewp.lndo.site',
             https: false,
-            notify: false
+            notify: false,
+            open: false
         })
     ]
 }
